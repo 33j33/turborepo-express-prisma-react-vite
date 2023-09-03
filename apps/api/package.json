@@ -3,17 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsup src/index.ts --format cjs",
+    "build": "dotenv -e .env -- tsup src/index.ts --format cjs",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
+    "dev": "dotenv -e .env -- tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "db:generate": "prisma generate --schema=src/prisma/schema.prisma",
+    "db:migrate": "prisma migrate dev --schema=src/prisma/schema.prisma"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
+    "@prisma/client": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "morgan": "^1.10.0"
@@ -29,6 +32,7 @@
     "eslint-config-custom-server": "*",
     "jest": "^26.6.3",
     "jest-presets": "*",
+    "prisma": "5.2.0",
     "supertest": "^6.2.4",
     "tsconfig": "*",
     "tsup": "^6.2.3",

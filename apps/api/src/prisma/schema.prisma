@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id            String                 @id @default(uuid())
+  name          String                 @unique
+  description   String
+  rules         Json
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  trackingPlans EventsOnTrackingPlan[]
+}
+
+model TrackingPlan {
+  id        String                 @id @default(uuid())
+  name      String                 @unique
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @updatedAt
+  events    EventsOnTrackingPlan[]
+}
+
+model EventsOnTrackingPlan {
+  event          Event        @relation(fields: [eventId], references: [id]) // needed for prisma. not an actual column in db
+  eventId        String // db specifc 
+  trackingPlan   TrackingPlan @relation(fields: [trackingPlanId], references: [id]) // needed for prisma. not an actual column in db
+  trackingPlanId String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@id([eventId, trackingPlanId]) // creates a composite primary key
+}

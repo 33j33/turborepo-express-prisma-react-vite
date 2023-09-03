@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+export type { AnyZodObject } from "zod";
 export const Event = z.object({
   name: z.string(),
   description: z.string(),
@@ -16,10 +17,10 @@ export const Event = z.object({
 
 export type EventType = z.infer<typeof Event>;
 
-export const TrackingPlan = z.object({name: z.string()})
+export const TrackingPlan = z.object({ name: z.string() });
 export type TrackingPlanType = z.infer<typeof TrackingPlan>;
 
 export const TrackingPlanWithEvents = TrackingPlan.extend({
-    events: z.array(Event)
-})
-export type TrackingPlanWithEventsType = z.infer<typeof TrackingPlanWithEvents>
+  events: z.array(Event),
+});
+export type TrackingPlanWithEventsType = z.infer<typeof TrackingPlanWithEvents>;

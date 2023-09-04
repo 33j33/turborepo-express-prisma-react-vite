@@ -1,0 +1,859 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "/healthz",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      }
+    },
+    "/trackingplans": {
+      "post": {
+        "summary": "/trackingplans",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "9b53a465-c66d-4155-a965-82fdec2ac61e"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Tracking Plan 2"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:45:30.764Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:45:30.764Z"
+                },
+                "events": {
+                  "type": "array",
+                  "items": {},
+                  "example": [
+                    null
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "target": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "name"
+                          ]
+                        }
+                      }
+                    },
+                    "code": {
+                      "type": "string",
+                      "example": "P2002"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "get": {
+        "summary": "/trackingplans",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/trackingplans/{id}": {
+      "get": {
+        "summary": "/trackingplans/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "5f96ad4a-7fd5-4465-97eb-c8470288a1c9"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Lorem Ipsum Loremadf"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2023-09-03T21:24:00.150Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:46:26.953Z"
+                },
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "rules": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "$schema": {
+                            "type": "string"
+                          },
+                          "properties": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string"
+                              },
+                              "required": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "properties": {
+                                "type": "object",
+                                "properties": {
+                                  "price": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "product": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "currency": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "f2d9ab10-d18f-454f-b7ea-19b9cc56d721",
+                      "name": "Order Viewed",
+                      "description": "Whose order viewed",
+                      "rules": {
+                        "type": "object",
+                        "$schema": "http://json-schema.org/draft-07/schema#",
+                        "properties": {
+                          "type": "object",
+                          "required": [
+                            "product",
+                            "price",
+                            "currency"
+                          ],
+                          "properties": {
+                            "price": {
+                              "type": [
+                                "number"
+                              ]
+                            },
+                            "product": {
+                              "type": [
+                                "string"
+                              ]
+                            },
+                            "currency": {
+                              "type": [
+                                "string"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "createdAt": "2023-09-03T21:24:00.150Z",
+                      "updatedAt": "2023-09-03T21:24:00.150Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "patch": {
+        "summary": "/trackingplans/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "5f96ad4a-7fd5-4465-97eb-c8470288a1c9"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Lorem Ipsum"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2023-09-03T21:24:00.150Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:45:19.837Z"
+                },
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "rules": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "$schema": {
+                            "type": "string"
+                          },
+                          "properties": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string"
+                              },
+                              "required": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "properties": {
+                                "type": "object",
+                                "properties": {
+                                  "price": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "product": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "currency": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "f2d9ab10-d18f-454f-b7ea-19b9cc56d721",
+                      "name": "Order Viewed",
+                      "description": "Whose order viewed",
+                      "rules": {
+                        "type": "object",
+                        "$schema": "http://json-schema.org/draft-07/schema#",
+                        "properties": {
+                          "type": "object",
+                          "required": [
+                            "product",
+                            "price",
+                            "currency"
+                          ],
+                          "properties": {
+                            "price": {
+                              "type": [
+                                "number"
+                              ]
+                            },
+                            "product": {
+                              "type": [
+                                "string"
+                              ]
+                            },
+                            "currency": {
+                              "type": [
+                                "string"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "createdAt": "2023-09-03T21:24:00.150Z",
+                      "updatedAt": "2023-09-03T21:24:00.150Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/events": {
+      "post": {
+        "summary": "/events",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {},
+        "tags": []
+      },
+      "get": {
+        "summary": "/events",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "rules": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "$schema": {
+                        "type": "string"
+                      },
+                      "properties": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "required": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "properties": {
+                            "type": "object",
+                            "properties": {
+                              "price": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "product": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "currency": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "description",
+                  "rules",
+                  "createdAt",
+                  "updatedAt"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "summary": "/events/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "2a072674-13a8-42b9-a21b-ebf063614c65"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Order Viewed - 3"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Lorem iasfaspsumWhose order viewed"
+                },
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "object"
+                    },
+                    "$schema": {
+                      "type": "string",
+                      "example": "http://json-schema.org/draft-07/schema#"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "product"
+                          ]
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "price": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "number"
+                                  ]
+                                }
+                              }
+                            },
+                            "product": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "string"
+                                  ]
+                                }
+                              }
+                            },
+                            "currency": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "string"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2023-09-04T17:02:49.309Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:46:33.926Z"
+                },
+                "trackingPlans": {
+                  "type": "array",
+                  "items": {},
+                  "example": [
+                    null
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "patch": {
+        "summary": "/events/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "2a072674-13a8-42b9-a21b-ebf063614c65"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Order Viewed - 3"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Lorem iasfaspsumWhose order viewed"
+                },
+                "rules": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "object"
+                    },
+                    "$schema": {
+                      "type": "string",
+                      "example": "http://json-schema.org/draft-07/schema#"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "required": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "example": [
+                            "product"
+                          ]
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "price": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "number"
+                                  ]
+                                }
+                              }
+                            },
+                            "product": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "string"
+                                  ]
+                                }
+                              }
+                            },
+                            "currency": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "string"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2023-09-04T17:02:49.309Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2023-09-04T18:46:33.926Z"
+                },
+                "trackingPlans": {
+                  "type": "array",
+                  "items": {},
+                  "example": [
+                    null
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "definitions": {},
+  "info": {
+    "title": "api",
+    "version": "0.0.0",
+    "description": "Specification JSONs: [v2](/api-spec/v2), [v3](/api-spec/v3)."
+  }
+}

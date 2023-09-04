@@ -1,16 +1,17 @@
-# Turborepo kitchen sink starter
-
-This example also shows how to use [Workspace Configurations](https://turbo.build/repo/docs/core-concepts/monorepos/configuring-workspaces).
-
+# Turborepo based CRUD app 
+- uses node, express, prisma, react, vite
 ## Getting Started
 
-### Server
 - `npm install`
+### Server
 - install postgresql
-- create db
-- create .env. provide database url in the format `postgresql://USER:PASSWORD@HOST:PORT/DATABASE`
+- create database
+- cd `apps/api`
+- create .env and provide port and database url (`postgresql://USER:PASSWORD@HOST:PORT/DATABASE`)
 - npm run db:generate
-- npm run db:migrate
+- npm run db:migrate -- --name=MIGRATION_NAME
+- npm run dev
+- import the postman collection and test the apis
 
 
 ## What's inside?
@@ -20,16 +21,13 @@ This Turborepo includes the following packages and apps:
 ### Apps and Packages
 
 - `api`: an [Express](https://expressjs.com/) server
-- `admin`: a [Vite](https://vitejs.dev/) single page app
-- `ui`: a dummy React UI library (which contains a single `<CounterButton>` component)
+- `web`: a [Vite](https://vitejs.dev/) single page app
 - `scripts`: Jest and ESLint configurations
 - `tsconfig`: tsconfig.json's used throughout the monorepo
+- `types`: Zod Types
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Utilities
-
-This Turborepo has some additional tools already setup for you:
 
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting

@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export type { AnyZodObject } from "zod";
 export const Event = z.object({
+  trackingPlanId: z.optional(z.string().uuid()),
   name: z.string(),
   description: z.string(),
   rules: z.object({

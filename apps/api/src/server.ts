@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { trackingPlanRouter } from "./routes/trackingplan.route";
 import { errorResponder } from "./middleware/error.middleware";
+import { eventRouter } from "./routes/event.route";
 
 export const createServer = () => {
   const app = express();
@@ -15,6 +16,7 @@ export const createServer = () => {
       return res.json({ ok: true });
     })
     .use("/trackingplans", trackingPlanRouter)
+    .use("/events", eventRouter)
     .use(errorResponder);
 
   return app;

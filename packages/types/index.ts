@@ -24,3 +24,12 @@ export const TrackingPlanWithEvents = TrackingPlan.extend({
   events: z.array(Event),
 });
 export type TrackingPlanWithEventsType = z.infer<typeof TrackingPlanWithEvents>;
+
+export const Uuid = z.string().uuid();
+
+export const BaseQueryParams = z
+  .object({
+    offset: z.number(),
+    limit: z.number(),
+  })
+  .partial();

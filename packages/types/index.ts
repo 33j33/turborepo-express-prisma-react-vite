@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 export type { AnyZodObject } from "zod";
+export const Uuid = z.string().uuid();
+
 export const Event = z.object({
   trackingPlanId: z.optional(z.string().uuid()),
   name: z.string(),
@@ -26,11 +28,13 @@ export const TrackingPlanWithEvents = TrackingPlan.extend({
 });
 export type TrackingPlanWithEventsType = z.infer<typeof TrackingPlanWithEvents>;
 
-export const Uuid = z.string().uuid();
+export const TrackingPlanWithEventIds = TrackingPlan.extend({
+  eventIds: z.array(Uuid),
+});
 
 export const BaseQueryParams = z
   .object({
-    offset: z.number(),
-    limit: z.number(),
+    offset: z.string(),
+    limit: z.string(),
   })
   .partial();

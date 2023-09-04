@@ -1,9 +1,22 @@
-# Turborepo based CRUD app 
+# Turborepo based CRUD app
+
 - uses node, express, prisma, react, vite
-## Getting Started
+
+### Apps and Packages
+
+- `api`: an [Express](https://expressjs.com/) server
+- `web`: a [Vite](https://vitejs.dev/) single page app
+- `scripts`: Jest and ESLint configurations
+- `tsconfig`: tsconfig.json's used throughout the monorepo
+- `types`: Zod Types
+
+
+### Getting Started
 
 - `npm install`
-### Server
+
+#### Api Server
+
 - install postgresql
 - create database
 - cd `apps/api`
@@ -13,18 +26,10 @@
 - npm run dev
 - import the postman collection and test the apis
 
-
 ## What's inside?
 
 This Turborepo includes the following packages and apps:
 
-### Apps and Packages
-
-- `api`: an [Express](https://expressjs.com/) server
-- `web`: a [Vite](https://vitejs.dev/) single page app
-- `scripts`: Jest and ESLint configurations
-- `tsconfig`: tsconfig.json's used throughout the monorepo
-- `types`: Zod Types
 
 
 ### Utilities

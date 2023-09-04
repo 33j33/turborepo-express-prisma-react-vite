@@ -1,11 +1,11 @@
 {
   "extends": ["//"],
-  "globalDotEnv": [".env"],
   "pipeline": {
     "dev": {
       "dotEnv": [".env"]
     },
     "build": {
+      "dotEnv": [".env"],
       "outputs": ["dist/**"]
     }
   }

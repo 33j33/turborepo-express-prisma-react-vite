@@ -18,8 +18,8 @@ export const Event = z.object({
 });
 
 export const EventWithTrackingPlanIds = Event.extend({
-  trackingPlanIds: z.array(Uuid)
-})
+  trackingPlanIds: z.array(Uuid),
+});
 
 export const TrackingPlan = z.object({ name: z.string() });
 
@@ -32,11 +32,11 @@ export const TrackingPlanWithEventIds = TrackingPlan.extend({
 });
 
 export const BaseQueryParams = z
-.object({
-  offset: z.string(),
-  limit: z.string(),
-})
-.partial();
+  .object({
+    offset: z.string(),
+    limit: z.string(),
+  })
+  .partial();
 
 export type EventType = z.infer<typeof Event>;
 export type TrackingPlanType = z.infer<typeof TrackingPlan>;

@@ -66,7 +66,8 @@ export const getTrackingPlans = async (
 ) => {
   try {
     const result = BaseQueryParams.safeParse(req.query);
-    if (!result.success) throw new AppError(400, "Invalid Query Params", result.error);
+    if (!result.success)
+      throw new AppError(400, "Invalid Query Params", result.error);
     const plans = await prismaClient.trackingPlan.findMany({
       skip: Number(result.data.offset) ?? 0,
       take: Number(result.data.limit) ?? 50,
@@ -101,10 +102,10 @@ export const updateTrackingPlan = async (
         },
       },
       include: {
-        events: true
-      }
+        events: true,
+      },
     });
-    res.status(200).json(plan)
+    res.status(200).json(plan);
   } catch (err) {
     next(err);
   }

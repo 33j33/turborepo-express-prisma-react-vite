@@ -20,8 +20,8 @@ export const createEvent = async (
         trackingPlans: { connect: trackingPlanIds.map((id) => ({ id })) },
       },
       include: {
-        trackingPlans: true
-      }
+        trackingPlans: true,
+      },
     });
     res.status(201).json(event);
   } catch (error: any) {
@@ -36,21 +36,22 @@ export const getEvent = async (
 ) => {
   try {
     const result = Uuid.safeParse(req.params.id);
-    if (!result.success) throw new AppError(400, "Invalid Request Body Payload", result.error)
+    if (!result.success)
+      throw new AppError(400, "Invalid Request Body Payload", result.error);
     const eventId = result.data;
     const event = await prismaClient.event.findUniqueOrThrow({
       where: {
-        id: eventId
+        id: eventId,
       },
       include: {
-        trackingPlans: true
-      }
-    })
-    res.status(200).json(event)
-  } catch(err){
-    next(err)
+        trackingPlans: true,
+      },
+    });
+    res.status(200).json(event);
+  } catch (err) {
+    next(err);
   }
-}
+};
 
 export const getEvents = async (
   req: Request,
@@ -59,7 +60,8 @@ export const getEvents = async (
 ) => {
   try {
     const result = BaseQueryParams.safeParse(req.query);
-    if (!result.success) throw new AppError(400, "Invalid Query Params", result.error);
+    if (!result.success)
+      throw new AppError(400, "Invalid Query Params", result.error);
     const events = await prismaClient.event.findMany({
       skip: Number(result.data.offset) ?? 0,
       take: Number(result.data.limit) ?? 50,
@@ -93,10 +95,10 @@ export const updateEvent = async (
         },
       },
       include: {
-        trackingPlans: true
-      }
+        trackingPlans: true,
+      },
     });
-    res.status(200).json(event)
+    res.status(200).json(event);
   } catch (err) {
     next(err);
   }

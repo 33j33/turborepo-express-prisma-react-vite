@@ -16,7 +16,7 @@ export const createTrackingPlan = async (
   try {
     const result = TrackingPlanWithEvents.safeParse(req.body);
     if (!result.success) {
-      throw new AppError(400, "Invalid Body Payload", result.error);
+      throw new AppError(400, "Invalid Request Body Payload", result.error);
     }
     const { name, events } = result.data;
     const plan = await prismaClient.trackingPlan.create({
@@ -66,7 +66,7 @@ export const getTrackingPlans = async (
 ) => {
   try {
     const result = BaseQueryParams.safeParse(req.query);
-    if (!result.success) throw new AppError(400, "Invalid Id", result.error);
+    if (!result.success) throw new AppError(400, "Invalid Query Params", result.error);
     const plans = await prismaClient.trackingPlan.findMany({
       skip: Number(result.data.offset) ?? 0,
       take: Number(result.data.limit) ?? 50,
@@ -89,7 +89,7 @@ export const updateTrackingPlan = async (
     const trackingPlanId = req.params.id;
     const resultBody = TrackingPlanWithEventIds.safeParse(req.body);
     if (!resultBody.success)
-      throw new AppError(400, "Invalid Body Payload", resultBody.error);
+      throw new AppError(400, "Invalid Request Body Payload", resultBody.error);
     const { eventIds, name } = resultBody.data;
 
     const plan = await prismaClient.trackingPlan.update({

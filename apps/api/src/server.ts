@@ -7,7 +7,7 @@ import { eventRouter } from "./routes/event.route";
 const expressOasGenerator = require("express-oas-generator");
 export const createServer = () => {
   const app = express();
-  expressOasGenerator.init(
+  process.env.SWAGGER_GENERATE && expressOasGenerator.init(
     app,
     function (spec: any) {
       return spec;
@@ -17,7 +17,7 @@ export const createServer = () => {
     "api-docs",
     [],
     [],
-    ["production"]
+    ["production"],
   );
   app
     .disable("x-powered-by")

@@ -15,7 +15,7 @@ describe("server", () => {
 
 
 describe("Event Routes", () => {
-  let createdEventId: string = '2a072674-13a8-42b9-a21b-ebf063614c65';
+  let createdEventId: string = 'd1f87429-3a4d-4fc5-8f2b-0885c6844a75';
 
   // Test for creating an event
   it("should create an event", async () => {

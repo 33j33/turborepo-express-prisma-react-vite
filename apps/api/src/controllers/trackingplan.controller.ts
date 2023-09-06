@@ -68,9 +68,10 @@ export const getTrackingPlans = async (
     const result = BaseQueryParams.safeParse(req.query);
     if (!result.success)
       throw new AppError(400, "Invalid Query Params", result.error);
+    const { limit, offset } = result.data;
     const plans = await prismaClient.trackingPlan.findMany({
-      skip: Number(result.data.offset) ?? 0,
-      take: Number(result.data.limit) ?? 50,
+      skip: typeof offset === "undefined" ? 0 : +offset,
+      take: typeof limit === "undefined" ? 50 : +limit,
     });
     res.status(200).json(plans);
   } catch (err) {

@@ -69,7 +69,6 @@ export const getEvents = async (
     });
     res.status(200).json(events);
   } catch (err) {
-    console.log(err)
     next(err);
   }
 };

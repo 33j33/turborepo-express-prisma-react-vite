@@ -7,9 +7,7 @@ export function ItemDetailWrapper() {
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
-      <Typography variant="h5">
-        {params?.id ? "Details" : "Create New"}
-      </Typography>
+      <Typography variant="h5">{params?.id ? "Details" : "Create New"}</Typography>
       <Outlet />
     </Box>
   );

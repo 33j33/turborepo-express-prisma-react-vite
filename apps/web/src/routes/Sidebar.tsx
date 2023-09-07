@@ -11,10 +11,8 @@ export const getEntityLoader =
     return data;
   };
 export function Sidebar() {
-  const data = useLoaderData() as
-    | EventResponseType[]
-    | TrackingPlanResponseType[];
-    
+  const data = useLoaderData() as EventResponseType[] | TrackingPlanResponseType[];
+
   return (
     <Drawer
       variant="permanent"
@@ -25,8 +23,7 @@ export function Sidebar() {
           width: drawerWidth,
           boxSizing: "border-box",
         },
-      }}
-    >
+      }}>
       <Toolbar />
       <Box
         sx={{
@@ -36,8 +33,7 @@ export function Sidebar() {
           gap: "20px",
           flexDirection: "column",
           alignItems: "center",
-        }}
-      >
+        }}>
         {data?.map((o) => (
           <Button
             size="small"
@@ -49,8 +45,7 @@ export function Sidebar() {
               "&.active": {
                 border: "1px solid",
               },
-            }}
-          >
+            }}>
             {o.name}
           </Button>
         ))}

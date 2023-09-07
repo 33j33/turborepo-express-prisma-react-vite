@@ -2,12 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { AppError } from "../helpers/error.helper";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-export const errorResponder = (
-  error: Error,
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
+export const errorResponder = (error: Error, request: Request, response: Response, next: NextFunction) => {
   let status: number = 500;
   let res: Record<string, any> = { message: "Something went wrong" };
   if (error instanceof AppError) {

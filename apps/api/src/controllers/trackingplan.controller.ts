@@ -1,18 +1,9 @@
 import { prismaClient } from "../prisma/client";
 import { NextFunction, Request, Response } from "express";
-import {
-  BaseQueryParams,
-  TrackingPlanWithEventIds,
-  TrackingPlanWithEvents,
-  Uuid,
-} from "types";
+import { BaseQueryParams, TrackingPlanWithEventIds, TrackingPlanWithEvents, Uuid } from "types";
 import { AppError } from "../helpers/error.helper";
 
-export const createTrackingPlan = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createTrackingPlan = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = TrackingPlanWithEvents.safeParse(req.body);
     if (!result.success) {
@@ -36,11 +27,7 @@ export const createTrackingPlan = async (
   }
 };
 
-export const getTrackingPlan = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getTrackingPlan = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
     const result = Uuid.safeParse(id);
@@ -59,15 +46,10 @@ export const getTrackingPlan = async (
   }
 };
 
-export const getTrackingPlans = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getTrackingPlans = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = BaseQueryParams.safeParse(req.query);
-    if (!result.success)
-      throw new AppError(400, "Invalid Query Params", result.error);
+    if (!result.success) throw new AppError(400, "Invalid Query Params", result.error);
     const { limit, offset } = result.data;
     const plans = await prismaClient.trackingPlan.findMany({
       skip: typeof offset === "undefined" ? 0 : +offset,
@@ -79,19 +61,13 @@ export const getTrackingPlans = async (
   }
 };
 
-export const updateTrackingPlan = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateTrackingPlan = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const resultId = Uuid.safeParse(req.params.id);
-    if (!resultId.success)
-      throw new AppError(400, "Invalid Id", resultId.error);
+    if (!resultId.success) throw new AppError(400, "Invalid Id", resultId.error);
     const trackingPlanId = req.params.id;
     const resultBody = TrackingPlanWithEventIds.safeParse(req.body);
-    if (!resultBody.success)
-      throw new AppError(400, "Invalid Request Body Payload", resultBody.error);
+    if (!resultBody.success) throw new AppError(400, "Invalid Request Body Payload", resultBody.error);
     const { eventIds, name } = resultBody.data;
 
     const plan = await prismaClient.trackingPlan.update({

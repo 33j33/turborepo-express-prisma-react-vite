@@ -1,11 +1,5 @@
 import "./App.css";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Navigate,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from "react-router-dom";
 import { Root } from "./routes/root";
 import ErrorPage from "./components/ErrorPage";
 import { getitemLoader, ItemDetail } from "./routes/ItemDetail";
@@ -26,17 +20,9 @@ const router = createBrowserRouter(
             <>
               <Sidebar /> <ItemDetailWrapper />
             </>
-          }
-        >
-          <Route
-            index
-            element={<ItemDetail entity={o} />}
-          />
-          <Route
-            path=":id"
-            element={<ItemDetail entity={o} />}
-            loader={getitemLoader(o)}
-          />
+          }>
+          <Route index element={<ItemDetail entity={o} />} />
+          <Route path=":id" element={<ItemDetail entity={o} />} loader={getitemLoader(o)} />
         </Route>
       ))}
     </Route>

@@ -10,25 +10,24 @@
 - `tsconfig`: tsconfig.json's used throughout the monorepo
 - `types`: Zod Types
 
-
 ### Getting Started
 
 - `npm install`
 
 - #### Api Server
 
-    - install postgresql
-    - create database
-    - cd `apps/api`
-    - create .env and provide port and database url (`postgresql://USER:PASSWORD@HOST:PORT/DATABASE`)
-    - `npm run db:generate`
-    - `npm run db:migrate -- --name=MIGRATION_NAME`
-    - import the postman collection to play with apis
+  - install postgresql
+  - create database
+  - cd `apps/api`
+  - create .env and provide port and database url (`postgresql://USER:PASSWORD@HOST:PORT/DATABASE`)
+  - `npm run db:generate`
+  - `npm run db:migrate -- --name=MIGRATION_NAME`
+  - import the postman collection to play with apis
 
-- #### Client 
-    - cd `apps/web`
-    - create `.env` at the root using `.env.example` as reference
+- #### Client
 
+  - cd `apps/web`
+  - create `.env` at the root using `.env.example` as reference
 
 - `npm run dev` at the root project. This will run `turbo dev`
 

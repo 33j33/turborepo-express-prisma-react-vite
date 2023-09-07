@@ -3,11 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { BaseQueryParams, Event, EventWithTrackingPlanIds, Uuid } from "types";
 import { AppError } from "../helpers/error.helper";
 
-export const createEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const createEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = EventWithTrackingPlanIds.safeParse(req.body);
     if (!result.success) {
@@ -29,15 +25,10 @@ export const createEvent = async (
   }
 };
 
-export const getEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = Uuid.safeParse(req.params.id);
-    if (!result.success)
-      throw new AppError(400, "Invalid Request Body Payload", result.error);
+    if (!result.success) throw new AppError(400, "Invalid Request Body Payload", result.error);
     const eventId = result.data;
     const event = await prismaClient.event.findUniqueOrThrow({
       where: {
@@ -53,19 +44,14 @@ export const getEvent = async (
   }
 };
 
-export const getEvents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getEvents = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = BaseQueryParams.safeParse(req.query);
-    if (!result.success)
-      throw new AppError(400, "Invalid Query Params", result.error);
-    const {limit, offset} = result.data; 
+    if (!result.success) throw new AppError(400, "Invalid Query Params", result.error);
+    const { limit, offset } = result.data;
     const events = await prismaClient.event.findMany({
-      skip:  typeof offset === 'undefined' ? 0 : +offset ,
-      take: typeof limit === 'undefined' ? 50: +limit
+      skip: typeof offset === "undefined" ? 0 : +offset,
+      take: typeof limit === "undefined" ? 50 : +limit,
     });
     res.status(200).json(events);
   } catch (err) {
@@ -73,19 +59,13 @@ export const getEvents = async (
   }
 };
 
-export const updateEvent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const resultId = Uuid.safeParse(req.params.id);
-    if (!resultId.success)
-      throw new AppError(400, "Invalid Id", resultId.error);
+    if (!resultId.success) throw new AppError(400, "Invalid Id", resultId.error);
     const eventId = req.params.id;
     const resultBody = EventWithTrackingPlanIds.safeParse(req.body);
-    if (!resultBody.success)
-      throw new AppError(400, "Invalid Request Body Payload", resultBody.error);
+    if (!resultBody.success) throw new AppError(400, "Invalid Request Body Payload", resultBody.error);
     const { trackingPlanIds, ...eventReq } = resultBody.data;
     const event = await prismaClient.event.update({
       where: { id: eventId },

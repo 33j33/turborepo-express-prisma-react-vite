@@ -1,43 +1,19 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Grid, TextField, Typography } from "@mui/material";
 import { Fragment } from "react";
-import {
-  LoaderFunction,
-  matchPath,
-  useLoaderData,
-  useLocation,
-  useParams,
-} from "react-router-dom";
-import {
-  EventResponseType,
-  EventWithTrackinPlansResponseType,
-  ROUTES,
-  RoutesType,
-  TrackingPlanWithEventsResponseType,
-} from "types";
+import { LoaderFunction, matchPath, useLoaderData, useLocation, useParams } from "react-router-dom";
+import { EventWithTrackinPlansResponseType, ROUTES, RoutesType, TrackingPlanWithEventsResponseType } from "types";
 
 export const getitemLoader =
   (entity: RoutesType): LoaderFunction =>
   async ({ params }) => {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/${entity}/${params.id}`
-    );
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/${entity}/${params.id}`);
     const data = await res.json();
     return data;
   };
 
 export function ItemDetail({ entity }: { entity: RoutesType }) {
   const params = useParams();
-  const data = useLoaderData() as
-    | EventWithTrackinPlansResponseType
-    | TrackingPlanWithEventsResponseType
-    | undefined;
+  const data = useLoaderData() as EventWithTrackinPlansResponseType | TrackingPlanWithEventsResponseType | undefined;
   const location = useLocation();
 
   const isEvent = entity === ROUTES.EVENTS;
@@ -48,19 +24,11 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
   const indexRoute = matchPath(`${entity}`, location.pathname);
 
   const childEvents = plan?.events ?? [{}];
-  const childPlans = event?.trackingPlans ?? [{}];
+  const childPlans = event?.trackingPlans ?? [];
 
   return (
     <Box>
-      <Grid
-        container
-        spacing={4}
-        width="70%"
-        alignItems={"center"}
-        marginLeft={0}
-        marginTop={4}
-        columns={12}
-      >
+      <Grid container spacing={4} width="70%" alignItems={"center"} marginLeft={0} marginTop={4} columns={12}>
         <Grid md={3}>
           <Typography variant="subtitle2">Name</Typography>
         </Grid>
@@ -74,13 +42,7 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
         )}
         {isEvent && (
           <Grid md={9} marginBottom={3}>
-            <TextField
-              fullWidth
-              value={event?.description || ""}
-              variant="outlined"
-              multiline
-              rows={2}
-            />
+            <TextField fullWidth value={event?.description || ""} variant="outlined" multiline rows={2} />
           </Grid>
         )}
         {isEvent && (
@@ -99,24 +61,22 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
             />
           </Grid>
         )}
-        {<Grid md={12}>
-          <Divider textAlign="left" sx={{ marginBottom: "20px" }}>
-            {isPlan ? "Tracking Plans" : "Events"} Associated
-          </Divider>
-        </Grid>}
-        {isPlan &&
+
+        <Grid md={10} alignItems="center" gap={2}>
+          <Divider textAlign="left">{isPlan ? "Events" : "Tracking Plans"} Associated</Divider>
+        </Grid>
+        <Grid md={2}>
+          <Button variant="outlined">Add</Button>
+        </Grid>
+        {!indexRoute &&
+          isPlan &&
           childEvents.map((evt) => (
-            <Fragment key={evt.id}>
+            <Grid key={evt.id} md={12} container border="1px dashed grey" padding={2} marginTop={2} alignItems="center">
               <Grid md={3}>
                 <Typography variant="subtitle2">Name</Typography>
               </Grid>
               <Grid md={9} marginBottom={3}>
-                <TextField
-                  fullWidth
-                  value={evt?.name || ""}
-                  variant="outlined"
-                  helperText={evt?.id || ""}
-                />
+                <TextField fullWidth value={evt?.name || ""} variant="outlined" helperText={evt?.id || ""} />
               </Grid>
 
               <Grid md={3}>
@@ -124,13 +84,7 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
               </Grid>
 
               <Grid md={9} marginBottom={3}>
-                <TextField
-                  fullWidth
-                  value={evt?.description || ""}
-                  variant="outlined"
-                  multiline
-                  rows={2}
-                />
+                <TextField fullWidth value={evt?.description || ""} variant="outlined" multiline rows={2} />
               </Grid>
 
               <Grid md={3}>
@@ -146,23 +100,19 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
                   rows={4}
                 />
               </Grid>
-            </Fragment>
+            </Grid>
           ))}
-        {isEvent &&
+        {!indexRoute &&
+          isEvent &&
           childPlans.map((plan) => (
-            <Fragment key={plan.id}>
+            <Grid key={plan.id}>
               <Grid md={3}>
                 <Typography variant="subtitle2">Name</Typography>
               </Grid>
               <Grid md={9} marginBottom={3}>
-                <TextField
-                  fullWidth
-                  value={plan?.name || ""}
-                  variant="outlined"
-                  helperText={plan?.id || ""}
-                />
+                <TextField fullWidth value={plan?.name || ""} variant="outlined" helperText={plan?.id || ""} />
               </Grid>
-            </Fragment>
+            </Grid>
           ))}
       </Grid>
     </Box>

@@ -20,31 +20,30 @@ export const Event = z.object({
 export const EventResponse = Event.extend({
   id: z.string().uuid(),
   createdAt: z.string(),
-  updatedAt: z.string()
-})
+  updatedAt: z.string(),
+});
 
 export const EventWithTrackingPlanIds = Event.extend({
   trackingPlanIds: z.array(Uuid),
 });
-
 
 export const TrackingPlan = z.object({ name: z.string() });
 export const TrackingPlanResponse = TrackingPlan.extend({
   id: z.string().uuid(),
   createdAt: z.string(),
   updatedAt: z.string(),
-})
+});
 
 export const EventWithTrackinPlansResponse = EventResponse.extend({
-  trackingPlans: z.array(TrackingPlanResponse)
-})
+  trackingPlans: z.array(TrackingPlanResponse),
+});
 
 export const TrackingPlanWithEvents = TrackingPlan.extend({
   events: z.array(Event),
 });
 export const TrackingPlanWithEventsResponse = TrackingPlanResponse.extend({
-  events: z.array(EventResponse)
-})
+  events: z.array(EventResponse),
+});
 
 export const TrackingPlanWithEventIds = TrackingPlan.extend({
   eventIds: z.array(Uuid),
@@ -57,18 +56,17 @@ export const BaseQueryParams = z
   })
   .partial();
 
-
 export type EventType = z.infer<typeof Event>;
 export type EventResponseType = z.infer<typeof EventResponse>;
-export type EventWithTrackinPlansResponseType = z.infer<typeof EventWithTrackinPlansResponse>
+export type EventWithTrackinPlansResponseType = z.infer<typeof EventWithTrackinPlansResponse>;
 export type TrackingPlanType = z.infer<typeof TrackingPlan>;
 export type TrackingPlanResponseType = z.infer<typeof TrackingPlanResponse>;
 export type TrackingPlanWithEventsType = z.infer<typeof TrackingPlanWithEvents>;
-export type TrackingPlanWithEventsResponseType = z.infer<typeof TrackingPlanWithEventsResponse>
+export type TrackingPlanWithEventsResponseType = z.infer<typeof TrackingPlanWithEventsResponse>;
 
 export const ROUTES = {
-  PLANS: 'trackingplans',
-  EVENTS: 'events'
-} as const
+  PLANS: "trackingplans",
+  EVENTS: "events",
+} as const;
 
-export type RoutesType  = typeof ROUTES[keyof typeof ROUTES]
+export type RoutesType = (typeof ROUTES)[keyof typeof ROUTES];

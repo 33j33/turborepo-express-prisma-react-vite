@@ -10,49 +10,37 @@ describe("server", () => {
         expect(res.body.ok).toBe(true);
       });
   });
-  
 });
 
-
 describe("Event Routes", () => {
-  let createdEventId: string = 'd1f87429-3a4d-4fc5-8f2b-0885c6844a75';
+  let createdEventId: string = "d1f87429-3a4d-4fc5-8f2b-0885c6844a75";
 
   // Test for creating an event
   it("should create an event", async () => {
     const newEvent = {
-      "name": "Order Viewed - 3",
-      "description": "Lorem iasfaspsumWhose order viewed",
-      "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "type": "object",
-          "properties": {
-              "type": "object",
-              "properties": {
-                  "product": {
-                      "type": [
-                          "string"
-                      ]
-                  },
-                  "price": {
-                      "type": [
-                          "number"
-                      ]
-                  },
-                  "currency": {
-                      "type": [
-                          "string"
-                      ]
-                  }
-              },
-              "required": [
-                  "product",
-                  "price",
-                  "currency"
-              ]
-          }
+      name: "Order Viewed - 3",
+      description: "Lorem iasfaspsumWhose order viewed",
+      rules: {
+        $schema: "http://json-schema.org/draft-07/schema#",
+        type: "object",
+        properties: {
+          type: "object",
+          properties: {
+            product: {
+              type: ["string"],
+            },
+            price: {
+              type: ["number"],
+            },
+            currency: {
+              type: ["string"],
+            },
+          },
+          required: ["product", "price", "currency"],
+        },
       },
-      "trackingPlanIds": []
-  }
+      trackingPlanIds: [],
+    };
 
     await supertest(createServer())
       .post("/events")
@@ -86,7 +74,8 @@ describe("Event Routes", () => {
       .expect(200)
       .then((res) => {
         expect(Array.isArray(res.body)).toBe(true);
-      }).catch(err => console.log(err));
+      })
+      .catch((err) => console.log(err));
   });
 
   // Test for updating an event
@@ -96,39 +85,29 @@ describe("Event Routes", () => {
     }
 
     const updatedEvent = {
-      "name": "Updated Event",
-      "description": "Lorem iasfaspsumWhose order viewed",
-      "rules": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "type": "object",
-          "properties": {
-              "type": "object",
-              "properties": {
-                  "product": {
-                      "type": [
-                          "string"
-                      ]
-                  },
-                  "price": {
-                      "type": [
-                          "number"
-                      ]
-                  },
-                  "currency": {
-                      "type": [
-                          "string"
-                      ]
-                  }
-              },
-              "required": [
-                  "product",
-                  "price",
-                  "currency"
-              ]
-          }
+      name: "Updated Event",
+      description: "Lorem iasfaspsumWhose order viewed",
+      rules: {
+        $schema: "http://json-schema.org/draft-07/schema#",
+        type: "object",
+        properties: {
+          type: "object",
+          properties: {
+            product: {
+              type: ["string"],
+            },
+            price: {
+              type: ["number"],
+            },
+            currency: {
+              type: ["string"],
+            },
+          },
+          required: ["product", "price", "currency"],
+        },
       },
-      "trackingPlanIds": []
-  }
+      trackingPlanIds: [],
+    };
 
     await supertest(createServer())
       .patch(`/events/${createdEventId}`)

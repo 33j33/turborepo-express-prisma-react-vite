@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { createServer } from "../server"; 
+import { createServer } from "../server";
 
 describe("Tracking Plan Routes", () => {
   let createdTrackingPlanId = "5f96ad4a-7fd5-4465-97eb-c8470288a1c9";
@@ -56,7 +56,6 @@ describe("Tracking Plan Routes", () => {
       .expect(200)
       .then((res) => {
         expect(res.body.id).toBe(createdTrackingPlanId);
-        
       });
   });
 
@@ -78,33 +77,33 @@ describe("Tracking Plan Routes", () => {
     }
 
     const updatedTrackingPlan = {
-        "name": "Updated Tracking Plan 2",
-        "events": [
-         {
-            "name": "Update Event 1",
-            "description": "Whose order viewed",
-            "rules": {
-              "$schema": "http://json-schema.org/draft-07/schema#",
-              "type": "object",
-              "properties": {
-                "type": "object",
-                "properties": {
-                  "product": {
-                    "type": ["string"]
-                  },
-                  "price": {
-                    "type": ["number"]
-                  },
-                  "currency": {
-                    "type": ["string"]
-                  }
+      name: "Updated Tracking Plan 2",
+      events: [
+        {
+          name: "Update Event 1",
+          description: "Whose order viewed",
+          rules: {
+            $schema: "http://json-schema.org/draft-07/schema#",
+            type: "object",
+            properties: {
+              type: "object",
+              properties: {
+                product: {
+                  type: ["string"],
                 },
-                "required": ["product", "price", "currency"]
-              }
-            }
-          }
-        ]
-      }
+                price: {
+                  type: ["number"],
+                },
+                currency: {
+                  type: ["string"],
+                },
+              },
+              required: ["product", "price", "currency"],
+            },
+          },
+        },
+      ],
+    };
 
     await supertest(createServer())
       .patch(`/trackingplans/${createdTrackingPlanId}`)

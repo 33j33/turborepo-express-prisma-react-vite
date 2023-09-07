@@ -21,7 +21,7 @@ export const getitemLoader =
 export function ItemDetail({ entity }: { entity: RoutesType }) {
   const params = useParams();
   const data = useLoaderData() as EventWithTrackinPlansResponseType | 
-    TrackingPlanWithEventsResponseType;
+    TrackingPlanWithEventsResponseType | undefined;
 
 const isEvent = entity === ROUTES.EVENTS
 const event = data as EventWithTrackinPlansResponseType
@@ -45,7 +45,7 @@ const plan = data as TrackingPlanWithEventsResponseType
         <Grid md={9} marginBottom={3}>
           <TextField
             fullWidth
-            value={data.name}
+            value={data?.name ?? ""}
             variant="outlined"
           />
         </Grid>
@@ -55,7 +55,7 @@ const plan = data as TrackingPlanWithEventsResponseType
         {isEvent && <Grid md={9} marginBottom={3}>
           <TextField
             fullWidth
-            value={event.description}
+            value={event?.description || ""}
             variant="outlined"
             multiline
             rows={2}
@@ -67,7 +67,7 @@ const plan = data as TrackingPlanWithEventsResponseType
         {isEvent && <Grid md={9} marginBottom={3}>
           <TextField
             fullWidth
-            value={JSON.stringify(event.rules)}
+            value={event?.rules ? JSON.stringify(event.rules) :  ""}
             variant="outlined"
             multiline
             rows={4}

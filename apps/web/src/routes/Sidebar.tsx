@@ -1,5 +1,5 @@
 import { Drawer, Toolbar, Box, Link, Button } from "@mui/material";
-import { LoaderFunction, NavLink, useLoaderData } from "react-router-dom";
+import { LoaderFunction, NavLink, useLoaderData, useLocation } from "react-router-dom";
 import { EventResponseType, RoutesType, TrackingPlanResponseType } from "types";
 const drawerWidth = `20%`;
 
@@ -14,6 +14,7 @@ export function Sidebar() {
   const data = useLoaderData() as
     | EventResponseType[]
     | TrackingPlanResponseType[];
+    
   return (
     <Drawer
       variant="permanent"

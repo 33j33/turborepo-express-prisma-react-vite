@@ -29,6 +29,10 @@ const router = createBrowserRouter(
           }
         >
           <Route
+            index
+            element={<ItemDetail entity={o} />}
+          />
+          <Route
             path=":id"
             element={<ItemDetail entity={o} />}
             loader={getitemLoader(o)}

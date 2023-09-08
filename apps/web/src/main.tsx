@@ -16,10 +16,8 @@ const darkTheme = createTheme({
 const domNode = document.getElementById("root");
 const root = createRoot(domNode as Element);
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider theme={darkTheme}>
+    <CssBaseline />
+    <App />
+  </ThemeProvider>
 );

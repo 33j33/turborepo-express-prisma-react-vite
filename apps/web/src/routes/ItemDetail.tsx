@@ -1,10 +1,11 @@
 import { Add, PlusOne, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { Box, Button, Divider, Grid, IconButton, TextField, Typography } from "@mui/material";
-import { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useEffect, useId, useState } from "react";
 import {
   ActionFunction,
   Form,
   LoaderFunction,
+  json,
   matchPath,
   useLoaderData,
   useLocation,
@@ -22,16 +23,17 @@ export const getitemLoader =
 
 export const itemAction: ActionFunction = async ({ request, params }) => {
   console.log({ request, params }, request.method);
- const formData = await request.formData()
- const formDataObject: { [key: string]: FormDataEntryValue } = {};
+  const formData = await request.formData();
+  const formDataObject: Record<string, FormDataEntryValue> = {};
 
- for (const [key, value] of formData.entries()) {
-   formDataObject[key] = value;
- }
- const childrenArray: { [key: string]: any }[] = [];
- const outputObject: { [key: string]: any } = {};
- for (const key in formDataObject) {
-  const match = key.match(/^child_(\d+)_(.*)$/);
+  for (const [key, value] of formData.entries()) {
+    formDataObject[key] = value;
+  }
+  const childrenArray: Record<string, FormDataEntryValue>[] = [];
+  const payload: Record<string, any> = {};
+  // create child events/plans from variables like this -> child_0_name, child_0_description
+  for (const key in formDataObject) {
+    const match = key.match(/^child_(\d+)_(.*)$/);
     if (match) {
       const index = parseInt(match[1]);
       const childProperty = match[2];
@@ -39,15 +41,47 @@ export const itemAction: ActionFunction = async ({ request, params }) => {
       if (!childrenArray[index]) {
         childrenArray[index] = {};
       }
-
-      childrenArray[index][childProperty] = formDataObject[key];
+      if (childProperty === "rules") {
+        childrenArray[index][childProperty] = JSON.parse(formDataObject[key] as string);
+      } else childrenArray[index][childProperty] = formDataObject[key];
     } else {
-      outputObject[key] = formDataObject[key];
+      if (key === "rules") {
+        payload[key] = JSON.parse(formDataObject[key] as string)
+      } else {payload[key] = formDataObject[key]};
     }
-}
- console.log(formDataObject, outputObject, childrenArray)
- 
-  return null
+  }
+  let entity = "";
+  if (request.url.includes(ROUTES.EVENTS)) {
+    if (request.method === "POST") payload.trackingPlans = childrenArray;
+    payload.trackingPlanIds = childrenArray.map(o => o.id)
+    entity = ROUTES.EVENTS;
+  } else if (request.url.includes(ROUTES.PLANS)) {
+    payload.events = childrenArray;
+    if (request.method === 'PATCH') payload.eventIds = childrenArray.map(o => o.id)
+    entity = ROUTES.PLANS;
+  }
+  
+  if (request.method ===  "POST"){
+      
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/${entity}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      return json(data)
+    }
+  else if (request.method === 'PATCH'){
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/${entity}/${params.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    return json(data);
+  }
+
+  return null;
 };
 
 export function ItemDetail({ entity }: { entity: RoutesType }) {
@@ -63,30 +97,40 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
   const indexRoute = matchPath(`${entity}`, location.pathname);
   const method = indexRoute ? "POST" : "PATCH";
 
-  let childEvents = plan?.events ?? [{}];
-  let childPlans = event?.trackingPlans ?? [];
-
   const [newChildEvents, setNewChildEvents] = useState<number[]>([]);
-  const [newChildPlans, setNewChildPlans] = useState<number[]>([]);
+  const [removedChildrenIds, setRemovedChildrenIds] = useState<string[]>([])
+
+  let childEvents = (plan?.events ?? []).filter(evt => !removedChildrenIds.includes(evt.id));
+  let childPlans = (event?.trackingPlans ?? []).filter(plan => !removedChildrenIds.includes(plan.id));
+  
 
   const onAdd = () => {
     isPlan && setNewChildEvents((s) => [...s, 1]);
-    isEvent && setNewChildPlans((s) => [...s, 1]);
+   
   };
 
-  const onRemove = (idx: number) => {
-    isEvent && setNewChildPlans((s) => s.filter((_, i) => i !== idx));
-    isPlan && setNewChildEvents((s) => s.filter((_, i) => i !== idx));
+  const onRemove = ({idx, id}: {idx?: number, id?: string}) => {
+    if (idx) isPlan && setNewChildEvents((s) => s.filter((_, i) => i !== idx));
+    if (id){
+      setRemovedChildrenIds((s) => [...s, id])
+    }
   };
+
+  const id = useId();
+
+  useEffect(() => {
+    // reset
+    setNewChildEvents([])
+  }, [params.id, entity])
 
   return (
     <Box>
       <Form method={method}>
-        <Grid container spacing={4} width="70%" alignItems={"center"} marginLeft={0} marginTop={4} columns={12}>
+        <Grid container spacing={4} width="70%" marginLeft={0} marginTop={4} columns={12}>
           <Grid md={3}>
             <Typography variant="subtitle2">Name</Typography>
           </Grid>
-          <Grid md={9} marginBottom={3}>
+          <Grid md={9} marginBottom={3} key={data?.name || id}>
             <TextField required fullWidth defaultValue={data?.name ?? ""} variant="outlined" name="name" />
           </Grid>
           {isEvent && (
@@ -126,18 +170,24 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
             </Grid>
           )}
 
-          <Grid md={9} alignItems="center" gap={2}>
+          <Grid md={9} gap={2}>
             {!indexRoute && <Divider textAlign="left"> {isPlan ? "Events" : "Tracking Plans"} Associated </Divider>}
           </Grid>
           <Grid md={3}>
-            <Button size="small" variant="outlined" sx={{ marginLeft: "30px" }} onClick={onAdd}>
-              {indexRoute ? "Associate" : "Add"} {isPlan ? "Event" : "Plan"}
-            </Button>
+            {indexRoute && isPlan && <Button size="small" variant="outlined" sx={{ marginLeft: "30px" }} onClick={onAdd}>
+              {"Associate Event"}
+            </Button>}
           </Grid>
           {!indexRoute &&
             isPlan &&
             childEvents.map((evt, idx) => (
-              <ChildContainer>
+              <ChildContainer key={evt.id} onRemove={() => onRemove({id: evt.id})}>
+                <TextField
+                    defaultValue={evt?.id || ""}
+                    name={`child_${idx}_id`}
+                    hidden
+                    sx={{display: "none"}}
+                  />
                 <Grid md={3}>
                   <Typography variant="subtitle2">Name</Typography>
                 </Grid>
@@ -186,7 +236,7 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
           {indexRoute &&
             isPlan &&
             newChildEvents.map((_, idx) => (
-              <ChildContainer key={idx} onRemove={() => onRemove(idx)}>
+              <ChildContainer key={idx} onRemove={() => onRemove({idx})}>
                 <Grid md={3}>
                   <Typography variant="subtitle2">Name</Typography>
                 </Grid>
@@ -199,7 +249,15 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
                 </Grid>
 
                 <Grid md={9} marginBottom={3}>
-                  <TextField required fullWidth defaultValue={""} variant="outlined" multiline rows={2} name={`child_${idx}_description`} />
+                  <TextField
+                    required
+                    fullWidth
+                    defaultValue={""}
+                    variant="outlined"
+                    multiline
+                    rows={2}
+                    name={`child_${idx}_description`}
+                  />
                 </Grid>
 
                 <Grid md={3}>
@@ -207,15 +265,29 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
                 </Grid>
 
                 <Grid md={9} marginBottom={3}>
-                  <TextField required fullWidth defaultValue={""} variant="outlined" multiline rows={4} name={`child_${idx}_rules`}/>
+                  <TextField
+                    required
+                    fullWidth
+                    defaultValue={""}
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    name={`child_${idx}_rules`}
+                  />
                 </Grid>
               </ChildContainer>
             ))}
 
           {!indexRoute &&
             isEvent &&
-            childPlans.map((plan) => (
-              <ChildContainer key={plan.id}>
+            childPlans.map((plan, idx) => (
+              <ChildContainer key={plan.id} onRemove={() => onRemove({id: plan.id})}>
+                <TextField
+                    defaultValue={plan?.id || ""}
+                    name={`child_${idx}_id`}
+                    hidden
+                    sx={{display: "none"}}
+                  />
                 <Grid md={3}>
                   <Typography variant="subtitle2">Name</Typography>
                 </Grid>
@@ -226,11 +298,12 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
                     defaultValue={plan?.name || ""}
                     variant="outlined"
                     helperText={plan?.id || ""}
+                    name={`child_${idx}_id`}
                   />
                 </Grid>
               </ChildContainer>
             ))}
-          {indexRoute &&
+          {/* {indexRoute &&
             isEvent &&
             newChildPlans.map((_, idx) => (
               <ChildContainer key={idx} onRemove={() => onRemove(idx)}>
@@ -247,18 +320,17 @@ export function ItemDetail({ entity }: { entity: RoutesType }) {
                   />
                 </Grid>
               </ChildContainer>
-            ))}
+            ))} */}
 
-            <Button
-              type="submit"
-              startIcon={<Add/>}
-              size="large"
-              color="primary"
-              variant="outlined"
-              sx={{ position: "absolute", top: "90px", right: "150px" }}
-              >
-              Save
-            </Button>
+          <Button
+            type="submit"
+            startIcon={<Add />}
+            size="large"
+            color="primary"
+            variant="outlined"
+            sx={{ position: "absolute", top: "90px", right: "150px" }}>
+            Save
+          </Button>
         </Grid>
       </Form>
     </Box>
@@ -273,7 +345,7 @@ function ChildContainer({
   children: ReactNode;
 }) {
   return (
-    <Grid md={12} container border="1px dashed grey" padding={4} marginTop={2} alignItems="center" position="relative">
+    <Grid md={12} container border="1px dashed grey" padding={4} marginTop={2} position="relative">
       {children}
       <Button
         startIcon={<RemoveCircleOutlineOutlined />}
